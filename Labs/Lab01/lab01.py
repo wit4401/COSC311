@@ -79,7 +79,7 @@ Task 5: Draw a bar figure to show the average length of words for each appearanc
 """
 import numpy as np # import numpy
 import matplotlib.pyplot as plt #import matplotlib
-print("Task 5:")
+print("Task 5:\nOutput pending...")
 wlist={}
 for word,count in words.items():
     try:
