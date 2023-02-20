@@ -53,25 +53,21 @@ Task 4: What are the words appear exactly 1 time, 2 times, 5 times, and 10 times
 """
 print("Task 4:")
 print("Word Appeared 1 time:")
-once=[i for i in words if words[i]==1]
-twice=[i for i in words if words[i]==2]
-five=[i for i in words if words[i]==5]
-ten=[i for i in words if words[i]==10]
 
 print("Found 1 time","("+str(len(once))+"):")
-print(*once,sep=', ')
+print(*[i for i in words if words[i]==1],sep=', ')
 print()
 
 print("Found 2 times","("+str(len(twice))+"):")
-print(*twice,sep=', ')
+print(*[i for i in words if words[i]==2],sep=', ')
 print()
 
 print("Found 5 times","("+str(len(five))+"):")
-print(*five,sep=', ')
+print(*[i for i in words if words[i]==5],sep=', ')
 print()
 
 print("Found 10 times","("+str(len(ten))+"):")
-print(*ten,sep=', ')
+print(*[i for i in words if words[i]==10],sep=', ')
 print()
 
 """
