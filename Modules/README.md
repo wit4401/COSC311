@@ -1,5 +1,2 @@
 # Module Info
-
-### All the modules are NOT my original Jupyter notebooks. They act as notes for the course
-
-## Module 1_1
+### All the modules are NOT my original Jupyter notebooks. They acted as notes for the course
