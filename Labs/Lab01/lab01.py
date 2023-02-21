@@ -52,38 +52,38 @@ print("Appearence of salmon: ",words['salmon'],'\n')
 Task 4: What are the words appear exactly 1 time, 2 times, 5 times, and 10 times, respectively?
 """
 print("Task 4:")
-print("Word Appeared 1 time:")
 
-print("Found 1 time","("+str(len(once))+"):")
+print("Words found 1 time:")
 print(*[i for i in words if words[i]==1],sep=', ')
 print()
 
-print("Found 2 times","("+str(len(twice))+"):")
+print("Words found 2 times:")
 print(*[i for i in words if words[i]==2],sep=', ')
 print()
 
-print("Found 5 times","("+str(len(five))+"):")
+print("Words found 5 times:")
 print(*[i for i in words if words[i]==5],sep=', ')
 print()
 
-print("Found 10 times","("+str(len(ten))+"):")
+print("Words found 10 times:")
 print(*[i for i in words if words[i]==10],sep=', ')
 print()
 
 """
 Task 5: Draw a bar figure to show the average length of words for each appearance frequency.
 """
-import numpy as np # import numpy
 import matplotlib.pyplot as plt #import matplotlib
 print("Task 5:\nOutput pending...")
-wlist={}
-for word,count in words.items():
+word_freq={}
+for word,freq in words.items():
     try:
-        wlist[count].append(word)
+        word_freq[freq].append(word)
     except:
-        wlist[count] = [word]
+        word_freq[freq] = [word]
 
-num_words = [len(value) for value in wlist.values()]
-avg_len = [sum([len(word) for word in value]) / len(value) for value in wlist.values()]
-plt.bar(list(wlist.keys()),avg_len)
+avg_len = [sum([len(word) for word in word_list]) / len(word_list) for word_list in word_freq.values()]
+plt.bar(list(word_freq.keys()),avg_len)
+plt.xlabel("Frequency")
+plt.ylabel("Average Length")
+plt.savefig("lab1_5.png")
 plt.show()
