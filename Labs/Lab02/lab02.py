@@ -28,13 +28,10 @@ print("\nUnique Ws values (Bejaia):")
 print(*bejaia['Ws'].unique())
 
 # Part IV
-print("\nData Points in Bejaia Region Data:")
-for name,lst in bejaia.items():
-    print("# values in " + name + ": " + str(len(lst)))
+print("\nSamples in Bejaia Region Data:",len(bejaia))
+print("Samples in the Sidi Region Data:",len(sidi))
+print("Total Samples:",len(bejaia)+len(sidi))
 
-print("\nData Points in the Sidi Region Data:")
-for name,lst in sidi.items():
-    print("# values in " + name + ": " + str(len(lst)))
 """
 Task 2: draw a line figure to show the temperature change with time for the "Bejaia Region Dataset"
 """
