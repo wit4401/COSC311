@@ -118,5 +118,5 @@ new_df.plot.bar()
 plt.xlabel('Status of Fire')
 plt.ylabel('Average Temperature')
 plt.title("Average Temperature Each Month Based on Fires")
-plt.savefig('task9.png')
+
 plt.show()
