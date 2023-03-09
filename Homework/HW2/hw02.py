@@ -19,21 +19,17 @@ def display_grid(board):
 # check if there is a winner
 def check_winner(board):
     win=False
-    if board[0][0]==board[0][1] and board[0][1]==board[0][2]:
-        if board[0][0]!=' ': 
+    novar=' '
+    for row in board:
+        if row==['X','X','X'] or row==['O','O','O']:
             win=True
-    elif board[1][0]==board[1][1] and board[1][1]==board[1][2]:
-        if board[1][0]!=' ':
+    for col in range(3):
+        if (board[0][col]==board[1][col] and board[1][col]==board[2][col]) and board[0][col]!=' ':
             win=True
-    elif board[2][0]==board[2][1] and board[2][1]==board[2][2]:
-        if board[2][0]!=' ':
-            win=True
-    elif board[0][0]==board[1][1] and board[1][1]==board[2][2]:
-        if board[0][0]!=' ':
-            win=True
-    elif board[0][2]==board[1][1] and board[1][1]==board[2][0]:
-        if board[0][2]!=' ':
-            win=True
+    if board[0][0]==board[1][1] and board[1][1]==board[2][2] and board[0][0]!=' ':
+        win=True
+    if board[0][2]==board[1][1] and board[1][1]==board[2][0] and board[1][1]!=' ':
+        win=True
     return win
 
 # checks for a tied game 'i.e. the board is full'
@@ -57,27 +53,31 @@ if __name__=="__main__":
     display_grid(game_grid)
     while flag:
         print('\n'+player+"'s turn.")
-        row=col=-1
+
         row=int(input("Row to place (0-2):"))
         col=int(input("Column to place (0-2):"))
-        if (row<0 and row>2) or (col<0 and col>2) or game_grid[row][col]!=' ':
-            print("\nInvalid Move!")
-        else:
-            game_grid[row][col]=player
-            win=check_winner(game_grid)
-            tie=check_tie(game_grid)
-            
-            print()
-            display_grid(game_grid)
 
-            if win:
-                print("\nWinner is " + player + "!")
-                flag=False
-            elif tie:
-                print("\nIt's a tie!")
-                flag=False
-            
-            if player=='X':
-                player='O'
+        try:
+            if (row<0 and row>2) or (col<0 and col>2) or game_grid[row][col]!=' ':
+                print("\nInvalid Move!")
             else:
-                player='X'
+                game_grid[row][col]=player
+                win=check_winner(game_grid)
+                tie=check_tie(game_grid)
+                
+                print()
+                display_grid(game_grid)
+
+                if win:
+                    print("\nWinner is " + player + "!")
+                    flag=False
+                elif tie:
+                    print("\nIt's a tie!")
+                    flag=False
+                
+                if player=='X':
+                    player='O'
+                else:
+                    player='X'
+        except:
+            print("\nInvalid Move!")
