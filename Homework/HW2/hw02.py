@@ -1,6 +1,6 @@
 """
 Homework 2: Tic-Tac-Toe
-A two player text version of Tic-Tac-Toe.
+A two player text version of the popular Tic-Tac-Toe.
 """
 
 # display tic tac toe board
@@ -68,35 +68,46 @@ if __name__=="__main__":
         try:
             row=int(input("Row to place (0-2):"))
             col=int(input("Column to place (0-2):"))
-        except ValueError:
-            print('Please Input a Number!')
-        except KeyboardInterrupt:
+        except ValueError: # error catching for string/char inputs
+            print('\nPlease Input a Number!')
+            continue
+        except KeyboardInterrupt: # keyboard interrupts declares no winner & exits program
             import sys
             print("\nNo Winner. Exited Sucessfully.")
             sys.exit()
+            
+        try: # checks for out of range numbers
+            if game_grid[row][col]!=' ': # if space is occupied (not a ' ') the put invalid input and skips back to the start of loop
+                print("\nInvalid Input! (Space Occupied)")
+                continue
+        except IndexError: # if row or col not in range declares invalid move, ignores rest of code, and skips back to the start of the loop
+            print("\nInvalid Input! (Row 0-2 & Col 0-2)")
+            continue
 
+        # checks if given numbers are negative if so invalid move and skips back to start of loop 
+        if row<0 or col<0:
+            print("\nInvalid Input!")
+            continue
+        
+        # after all error checking if inputs are valid and in range code executes as normal
+        game_grid[row][col]=player
+
+        win=check_winner(game_grid)
+        tie=check_tie(game_grid)
+        
+        print()
+        display_grid(game_grid)
+
+        # checks for winner or a tie
+        if win:
+            print("\nWinner is " + player + "!")
+            flag=False
+        elif tie:
+            print("\nIt's a tie!")
+            flag=False
+        
+        # switches current player turn
+        if player=='X':
+            player='O'
         else:
-            try:
-                if row<0 or col<0 or game_grid[row][col]!=' ':
-                    print("\nInvalid Move!")
-                else:
-                    game_grid[row][col]=player
-                    win=check_winner(game_grid)
-                    tie=check_tie(game_grid)
-                    
-                    print()
-                    display_grid(game_grid)
-
-                    if win:
-                        print("\nWinner is " + player + "!")
-                        flag=False
-                    elif tie:
-                        print("\nIt's a tie!")
-                        flag=False
-                    
-                    if player=='X':
-                        player='O'
-                    else:
-                        player='X'
-            except:
-                print("\nInvalid Move!")
+            player='X'
