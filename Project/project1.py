@@ -10,7 +10,7 @@ from sklearn import tree
 # More Necessary Libraries
 import numpy as np
 import pandas as pd
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns 
 sns.set()
@@ -23,51 +23,77 @@ Y = wifi_data['Room#'].values
 """
 Part I: Self-test for KNN and DT algorithms
 """
-knn_self=KNeighborsClassifier(n_neighbors=4)
-knn_self.fit(X,Y)
-print('KNN Self Test:')
-print(classification_report(Y,knn_self.predict(X)))
 
-dtclass_self=DecisionTreeClassifier(max_depth=3, random_state=0)
+# Here for the self test the training data is the test data
+knn_self=KNeighborsClassifier(n_neighbors=45)
+knn_self.fit(X,Y) # training the model
+print('KNN Self Test:')
+y_predict=knn_self.predict(X)
+print(classification_report(Y,y_predict))
+
+dtclass_self=DecisionTreeClassifier(max_depth=2, random_state=0)
 dtclass_self.fit(X,Y)
+y_predict=dtclass_self.predict(X)
 print('Decision Tree Self Test:')
-print(classification_report(Y,dtclass_self.predict(X)))
+print(classification_report(Y,y_predict))
 
 """
 Part II: Independent-test for KNN and DT algorithms
 """
+
+# independent test a certain percentage of data set is used as the testing data
+# while the remaining percentage is used as the training data. (30/70 split used here)
 x_train, x_test, y_train, y_test = train_test_split(X,Y,test_size=0.3,random_state=0)
-knn_ind=KNeighborsClassifier(n_neighbors=4)
+knn_ind=KNeighborsClassifier(n_neighbors=38)
 knn_ind.fit(x_train,y_train)
+y_predict=knn_ind.predict(x_test)
 print('KNN Independent:')
-print(classification_report(y_test,knn_ind.predict(x_test)))
+print(classification_report(y_test,y_predict))
 
 dtclass_ind=DecisionTreeClassifier(max_depth=3,random_state=0)
 dtclass_ind.fit(x_train,y_train)
+y_predict=dtclass_ind.predict(x_test)
 print('Decision Tree Independent:')
-print(classification_report(y_test,dtclass_ind.predict(x_test)))
+print(classification_report(y_test,y_predict))
 
 """
 Part III: Classification Model Finalization
-
-# constructing a final model based on the analysis above
-final_model=''
+"""
+# constructing a final model based on the analysis above and different approaches and experiments
+final_model=DecisionTreeClassifier(max_depth=4,random_state=0)
+final_model.fit(x_train,y_train)
+y_predict=final_model.predict(x_test)
+print('Final Model Report:')
+print(classification_report(y_test, y_predict))
 
 # illustrating a confusion matrix of the final model
- 
+cmatrix=confusion_matrix(y_test, y_predict)
+
+# Note: Inspiration for illutrating confusion matrix came from Module 5.1: KNN Neighbors & ML
+fig, ax = plt.subplots(figsize=(2, 2))
+ax.matshow(cmatrix, cmap=plt.cm.Blues, alpha=0.3)
+for i in range(cmatrix.shape[0]):
+    for j in range(cmatrix.shape[1]):
+        ax.text(x=j, y=i,s=cmatrix[i, j], va='center', ha='center', size='large')
+plt.xlabel('Predictions', fontsize=10)
+plt.ylabel('Actuals', fontsize=10)
+plt.title('Confusion Matrix', fontsize=10)
+plt.show()
+
 # Graphing Results of the Independent Tests from 10-50% of the data utilized
+# for testing purposes and rest for training the model
 model_scores=[]
-percentages=[0.1,0.2,0.3,0.4,0.5]
+percentages=[i/10 for i in range(1,6)]
 for i in percentages:
     x_train, x_test, y_train, y_test = train_test_split(X,Y,test_size=i,random_state=0)
     final_model.fit(x_train,y_train)
     model_scores.append(final_model.score(x_test,y_test))
 
-plt.plot(percentage,knn_scores,label='Model Performance',color='red')
+plt.plot(percentages,model_scores,label='Model Performance',color='red')
+plt.scatter(percentages,model_scores,color='red')
 plt.xlabel('Percentage of Data Used')
 plt.ylabel('Model Performance Score')
 plt.title('Model Perfomance: Percentage of Data Used')
 plt.legend()
 plt.show()
 plt.savefig('scores_independent.png')
-"""
