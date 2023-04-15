@@ -80,8 +80,8 @@ plt.ylabel('Actuals', fontsize=10)
 plt.title('Confusion Matrix', fontsize=10)
 plt.show()
 
-# Graphing Results of the Independent Tests from 10-50% of the data utilized
-# for testing purposes and rest for training the model
+# Line Graph: Results of the Independent Tests from 10-50% of the data utilized
+# for testing purposes and rest for training the finalized model
 model_scores=[]
 percentages=[i/10 for i in range(1,6)]
 for i in percentages:
