@@ -1,11 +1,9 @@
 # K Nearest Neighbor Libraries 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC
 
 # Decision Tree libraries
 from sklearn.tree import DecisionTreeClassifier
-from sklearn import tree
 
 # More Necessary Libraries
 import numpy as np
@@ -19,23 +17,24 @@ sns.set()
 wifi_data=pd.read_csv('wifi_localization.txt',sep="\t",names=['S1','S2','S3','S4','S5','S6','S7','Room#'])
 X = wifi_data[['S1','S2','S3','S4','S5','S6','S7']].values
 Y = wifi_data['Room#'].values
+x_train, x_test, y_train, y_test = train_test_split(X,Y,test_size=0.3,random_state=0)
+knn_model=KNeighborsClassifier(n_neighbors=39)
+dt_model=DecisionTreeClassifier(max_depth=3, random_state=0)
 
 """
 Part I: Self-test for KNN and DT algorithms
 """
 
 # Here for the self test the training data is the test data
-knn_self=KNeighborsClassifier(n_neighbors=45)
-knn_self.fit(X,Y) # training the model
+knn_model.fit(x_train,y_train) # training the model
 print('KNN Self Test:')
-y_predict=knn_self.predict(X)
-print(classification_report(Y,y_predict))
+y_predict=knn_model.predict(x_train)
+print(classification_report(y_train,y_predict))
 
-dtclass_self=DecisionTreeClassifier(max_depth=2, random_state=0)
-dtclass_self.fit(X,Y)
-y_predict=dtclass_self.predict(X)
+dt_model.fit(x_train,y_train)
+y_predict=dt_model.predict(x_train)
 print('Decision Tree Self Test:')
-print(classification_report(Y,y_predict))
+print(classification_report(y_train,y_predict))
 
 """
 Part II: Independent-test for KNN and DT algorithms
@@ -43,16 +42,13 @@ Part II: Independent-test for KNN and DT algorithms
 
 # independent test a certain percentage of data set is used as the testing data
 # while the remaining percentage is used as the training data. (30/70 split used here)
-x_train, x_test, y_train, y_test = train_test_split(X,Y,test_size=0.3,random_state=0)
-knn_ind=KNeighborsClassifier(n_neighbors=38)
-knn_ind.fit(x_train,y_train)
-y_predict=knn_ind.predict(x_test)
+knn_model.fit(x_train,y_train)
+y_predict=knn_model.predict(x_test)
 print('KNN Independent:')
 print(classification_report(y_test,y_predict))
 
-dtclass_ind=DecisionTreeClassifier(max_depth=3,random_state=0)
-dtclass_ind.fit(x_train,y_train)
-y_predict=dtclass_ind.predict(x_test)
+dt_model.fit(x_train,y_train)
+y_predict=dt_model.predict(x_test)
 print('Decision Tree Independent:')
 print(classification_report(y_test,y_predict))
 
@@ -60,7 +56,7 @@ print(classification_report(y_test,y_predict))
 Part III: Classification Model Finalization
 """
 # constructing a final model based on the analysis above and different approaches and experiments
-final_model=DecisionTreeClassifier(max_depth=4,random_state=0)
+final_model=knn_model
 final_model.fit(x_train,y_train)
 y_predict=final_model.predict(x_test)
 print('Final Model Report:')
@@ -96,4 +92,3 @@ plt.ylabel('Model Performance Score')
 plt.title('Model Perfomance: Percentage of Data Used')
 plt.legend()
 plt.show()
-plt.savefig('scores_independent.png')
